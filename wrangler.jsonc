@@ -1,0 +1,53 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "leak",
+  "main": "src/worker/index.ts",
+  "account_id": "4fce158a1a762f052c33df97d0799b63",
+  "compatibility_date": "2026-08-30",
+  "workers_dev": false,
+  "preview_urls": false,
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": true,
+    "html_handling": "none",
+    "not_found_handling": "single-page-application"
+  },
+  "routes": [
+    {
+      "pattern": "entangleit.com/leak*",
+      "zone_name": "entangleit.com"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "KV",
+      "id": "73e5b6e751d44ff7aa325da90f61807d"
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "leak-db",
+      "database_id": "3d0262f0-a1cc-4639-9ca2-0b51cdbdce2e",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "triggers": {
+    "crons": ["*/15 * * * *"]
+  },
+  "vars": {
+    "ENVIRONMENT": "production",
+    "APP_ORIGIN": "https://entangleit.com",
+    "APP_BASE": "/leak",
+    "EMAIL_FROM": "Leak <noreply@entangleit.com>",
+    "STRIPE_PRICE_MONTHLY": "price_1UAXSKP7zy7xb1rbkhByty6D"
+  },
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "invocation_logs": true,
+      "head_sampling_rate": 1
+    }
+  }
+}

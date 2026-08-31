@@ -1,0 +1,294 @@
+:root {
+  --bg: #07090b;
+  --paper: #10151a;
+  --paper-2: #161d24;
+  --line: #24303a;
+  --teal: #5eead4;
+  --teal-dim: #2a9a8a;
+  --seal: #e85d4c;
+  --ok: #3f9a6c;
+  --warn: #d4a017;
+  --text: #e8eef2;
+  --muted: #8896a3;
+  --font: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(900px 420px at 80% -10%, #12353a 0%, transparent 55%),
+    radial-gradient(700px 380px at -10% 20%, #1a1210 0%, transparent 50%),
+    var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: var(--teal);
+}
+
+.shell {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 28px 20px 80px;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 48px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: 0;
+  padding: 0;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.brand-mark {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: var(--seal);
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  color: #fff;
+}
+
+.hero h1 {
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  line-height: 1.1;
+  margin: 0 0 16px;
+  letter-spacing: -0.03em;
+}
+
+.hero p.lead {
+  font-size: 1.15rem;
+  color: var(--muted);
+  max-width: 40rem;
+  line-height: 1.5;
+  margin: 0 0 28px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.btn {
+  border: 1px solid var(--line);
+  background: var(--paper-2);
+  padding: 10px 16px;
+  border-radius: 8px;
+}
+
+.btn.primary {
+  background: var(--teal);
+  color: #04221d;
+  border-color: var(--teal);
+  font-weight: 600;
+}
+
+.btn.danger {
+  border-color: #5a2a24;
+  color: #f3b4ad;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  margin: 40px 0;
+}
+
+.card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px;
+}
+
+.card h3 {
+  margin: 0 0 8px;
+  font-size: 15px;
+}
+
+.card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.note {
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+form.stack,
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input[type="email"],
+input[type="text"],
+input[type="password"] {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+.finding {
+  display: grid;
+  gap: 8px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.finding:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.finding header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.finding .why,
+.finding .detail {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.finding .why {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.fix h3 {
+  margin: 8px 0 6px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.fix ol {
+  margin: 0 0 10px;
+  padding-left: 1.2rem;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.fix li {
+  margin-bottom: 6px;
+}
+
+.fix a.btn {
+  text-decoration: none;
+  color: inherit;
+}
+
+.pill {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+}
+
+.pill.critical {
+  color: var(--seal);
+  border-color: #5a2a24;
+}
+
+.pill.warning {
+  color: var(--warn);
+  border-color: #5a4a18;
+}
+
+.err {
+  color: var(--seal);
+  font-size: 14px;
+}
+
+.ok {
+  color: var(--ok);
+  font-size: 14px;
+}
+
+.mono {
+  font-family: var(--mono);
+  font-size: 13px;
+}
+
+ul.perms {
+  margin: 8px 0 0;
+  padding-left: 1.2rem;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+footer.foot {
+  margin-top: 64px;
+  color: var(--muted);
+  font-size: 13px;
+}

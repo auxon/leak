@@ -1,0 +1,8 @@
+ENVIRONMENT=development
+STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=
+STRIPE_PRICE_MONTHLY=price_1UAXSKP7zy7xb1rbkhByty6D
+SESSION_SECRET=change-me-to-a-long-random-string
+KEY_ENCRYPTION_KEY=change-me-to-another-long-random-string
+RESEND_API_KEY=
+EMAIL_FROM="Leak <noreply@entangleit.com>"
