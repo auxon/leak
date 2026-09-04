@@ -317,20 +317,11 @@ async function handlePlatformWebhook(request: Request, env: Env): Promise<Respon
   const event = JSON.parse(payload) as { type: string; data: { object: Record<string, unknown> } };
 
   if (event.type === "checkout.session.completed") {
-    const session = event.data.object as {
-      customer?: string | { id: string };
-      customer_email?: string;
-      customer_details?: { email?: string };
-      subscription?: string | { id: string };
-    };
-    const email = (session.customer_details?.email ?? session.customer_email ?? "").trim().toLowerCase();
-    const customerId = typeof session.customer === "string" ? session.customer : session.customer?.id;
-    const subscriptionId =
-      typeof session.subscription === "string" ? session.subscription : session.subscription?.id;
-    if (email && customerId && subscriptionId) {
-      const sub = await getSubscription(env, subscriptionId);
-      await entitlementFromSubscription(env, email, customerId, sub);
-    }
+    await fulfillCheckoutSession(env, event.data.object);
+  }
+
+  if (event.type === "checkout.session.async_payment_succeeded") {
+    await fulfillCheckoutSession(env, event.data.object);
   }
 
   if (
@@ -359,6 +350,34 @@ async function handlePlatformWebhook(request: Request, env: Env): Promise<Respon
   }
 
   return json({ received: true });
+}
+
+/**
+ * Fulfill a Checkout Session — but only once money has actually landed.
+ * checkout.session.completed fires for async methods (bank debits etc.)
+ * before the charge succeeds; the async_payment_succeeded event closes
+ * that gap. Both funnel here, gated on payment_status.
+ */
+async function fulfillCheckoutSession(
+  env: Env,
+  raw: Record<string, unknown>,
+): Promise<void> {
+  const session = raw as {
+    payment_status?: string;
+    customer?: string | { id: string };
+    customer_email?: string;
+    customer_details?: { email?: string };
+    subscription?: string | { id: string };
+  };
+  if (session.payment_status && session.payment_status !== "paid") return;
+  const email = (session.customer_details?.email ?? session.customer_email ?? "").trim().toLowerCase();
+  const customerId = typeof session.customer === "string" ? session.customer : session.customer?.id;
+  const subscriptionId =
+    typeof session.subscription === "string" ? session.subscription : session.subscription?.id;
+  if (email && customerId && subscriptionId) {
+    const sub = await getSubscription(env, subscriptionId);
+    await entitlementFromSubscription(env, email, customerId, sub);
+  }
 }
 
 async function findEmailForCustomer(env: Env, customerId: string): Promise<string | null> {
