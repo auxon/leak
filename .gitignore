@@ -4,3 +4,6 @@ dist
 .wrangler
 *.tsbuildinfo
 .DS_Store
+
+# Stripe Apps CLI build output
+stripe-app/.build/
