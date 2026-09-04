@@ -53,9 +53,32 @@ function json(data: unknown, status = 200, extra?: HeadersInit): Response {
   });
 }
 
+function withHtmlCharset(res: Response): Response {
+  const headers = new Headers(res.headers);
+  headers.set("content-type", "text/html; charset=utf-8");
+  return new Response(res.body, { status: res.status, headers });
+}
+
 function appUrl(env: Env, path: string): string {
-  const base = env.APP_BASE.replace(/\/$/, "");
-  return `${env.APP_ORIGIN}${base}${path}`;
+  const origin = env.APP_ORIGIN.replace(/\/$/, "");
+  const base = (env.APP_BASE || "/leak").replace(/\/$/, "");
+  const suffix = path.startsWith("/") ? path : `/${path}`;
+  return `${origin}${base}${suffix}`;
+}
+
+function linkEmail(url: string, preamble: string, footer: string): { text: string; html: string } {
+  return {
+    text: `${preamble}\n\n${url}\n\n${footer}`,
+    html: `<p>${escapeHtml(preamble).replace(/\n/g, "<br>")}</p><p><a href="${escapeHtml(url)}">${escapeHtml(url)}</a></p><p>${escapeHtml(footer)}</p>`,
+  };
+}
+
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
 }
 
 function isLocal(url: URL): boolean {
@@ -178,15 +201,15 @@ async function handleAuthRequest(request: Request, env: Env): Promise<Response> 
   const token = randomToken(24);
   const hash = await sha256Hex(token);
   await env.KV.put(magicKey(hash), email, { expirationTtl: MAGIC_TTL_SEC });
-  const loginUrl = appUrl(env, `/app?token=${token}`);
+  const loginUrl = appUrl(env, `/t/${token}`);
 
   if (env.RESEND_API_KEY) {
-    const ok = await sendEmail(
-      env,
-      email,
-      "Your Leak sign-in link",
-      `Sign in to Leak:\n\n${loginUrl}\n\nThis link expires in 15 minutes. If you did not request it, ignore this email.`,
+    const mail = linkEmail(
+      loginUrl,
+      "Sign in to Leak:",
+      "This link expires in 15 minutes. If you did not request it, ignore this email.",
     );
+    const ok = await sendEmail(env, email, "Your Leak sign-in link", mail.text, mail.html);
     if (!ok) return json({ error: "Could not send the sign-in email. Try again in a minute." }, 502);
     return json({ ok: true });
   }
@@ -405,11 +428,18 @@ async function runScanForEmail(env: Env, email: string): Promise<{ created: numb
       (!acct.lastAlertAt || now - acct.lastAlertAt >= ALERT_THROTTLE_MS);
     if (shouldAlert) {
       const lines = [...created, ...reopened].map((f) => `- ${f.title}: ${f.detail}`).join("\n");
+      const dashboard = appUrl(env, "/app");
+      const mail = linkEmail(
+        dashboard,
+        `New or reopened findings:\n\n${lines}`,
+        "Open Leak to replay failed events or connect a new key.",
+      );
       await sendEmail(
         env,
         email,
         `Leak found ${created.length + reopened.length} issue(s)`,
-        `New or reopened findings:\n\n${lines}\n\n${appUrl(env, "/app")}`,
+        mail.text,
+        mail.html,
       );
       acct.lastAlertAt = now;
     }
@@ -526,11 +556,6 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
 
-    if (url.pathname === PREFIX) {
-      url.pathname = `${PREFIX}/`;
-      return Response.redirect(url.toString(), 308);
-    }
-
     let stripped = url.pathname;
     if (stripped.startsWith(`${PREFIX}/`)) stripped = stripped.slice(PREFIX.length) || "/";
     else if (stripped === PREFIX) stripped = "/";
@@ -548,9 +573,16 @@ export default {
       const assetPath = stripped === "/" ? "/index.html" : stripped;
       const asset = await env.ASSETS.fetch(new Request(new URL(assetPath, "https://assets.local")));
       const isFile = /\.[a-z0-9]+$/i.test(stripped);
-      if (asset.status === 200) return asset;
+      const htmlType = (asset.headers.get("content-type") ?? "").includes("text/html");
+      if (asset.status === 200) {
+        // Real file on disk (including static .html like /privacy.html).
+        // html_handling is "none" so missing paths 404 below — no SPA
+        // fallback confusion possible here.
+        return htmlType ? withHtmlCharset(asset) : asset;
+      }
       if (isFile) return new Response("Not found", { status: 404 });
-      return env.ASSETS.fetch(new Request(new URL("/index.html", "https://assets.local")));
+      const index = await env.ASSETS.fetch(new Request(new URL("/index.html", "https://assets.local")));
+      return withHtmlCharset(index);
     }
     return json({ error: "Not found" }, 404);
   },

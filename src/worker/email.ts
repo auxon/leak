@@ -3,6 +3,7 @@ export async function sendEmail(
   to: string,
   subject: string,
   text: string,
+  html?: string,
 ): Promise<boolean> {
   if (!env.RESEND_API_KEY) return false;
   const sent = await fetch("https://api.resend.com/emails", {
@@ -16,6 +17,7 @@ export async function sendEmail(
       to: [to],
       subject,
       text,
+      ...(html ? { html } : {}),
     }),
   });
   if (!sent.ok) {

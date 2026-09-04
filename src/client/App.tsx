@@ -18,7 +18,7 @@ export function App() {
     void fetchMe().then(setMe);
   }, [path]);
 
-  if (path.startsWith("/app")) {
+  if (path.startsWith("/app") || path.startsWith("/t/")) {
     return <AppPage me={me} onMe={setMe} />;
   }
   return <LandingPage me={me} />;

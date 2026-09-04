@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Privacy Policy — Leak by EntangleIT</title>
+<meta name="description" content="How Leak collects, uses, and protects your data — for the Leak web app and the Leak Stripe App." />
+<link rel="icon" type="image/svg+xml" href="/leak/favicon.svg" />
+<style>
+  :root { --bg: #101014; --panel: #17171d; --ink: #f2f0ea; --mut: #a7a5ad; --coral: #e2574c; --line: #26262e; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.65 -apple-system, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 56px 22px 90px; }
+  header.brand { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .mark { width: 38px; height: 38px; border-radius: 10px; background: var(--coral); color: #fff; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 17px; }
+  .brand b { font-size: 19px; letter-spacing: .04em; }
+  h1 { font-size: 34px; margin: 18px 0 4px; }
+  .meta { color: var(--mut); font-size: 14px; margin-bottom: 28px; }
+  h2 { font-size: 21px; margin: 34px 0 8px; padding-top: 18px; border-top: 1px solid var(--line); }
+  p, li { color: #d9d7de; }
+  li { margin: 6px 0; }
+  a { color: #7dd3fc; }
+  code { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 1px 7px; font-size: 14px; }
+  footer { margin-top: 44px; color: var(--mut); font-size: 14px; border-top: 1px solid var(--line); padding-top: 18px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="brand"><span class="mark">Lk</span><b>LEAK</b></header>
+  <h1>Privacy Policy</h1>
+  <p class="meta">Effective September 4, 2026 · EntangleIT Inc., Ottawa, Canada</p>
+
+  <p>Leak is built by EntangleIT Inc. ("we"). This policy covers the <strong>Leak web app</strong> at <a href="https://entangleit.com/leak">entangleit.com/leak</a> and the <strong>Leak Stripe App</strong> distributed through the Stripe App Marketplace. Contact us any time by replying to any email Leak sends you.</p>
+
+  <h2>1. Data we collect</h2>
+  <ul>
+    <li><strong>Account email.</strong> Used as your account identifier, for passwordless sign-in links, billing entitlement, and alert emails.</li>
+    <li><strong>Stripe restricted keys (web app only).</strong> You paste a restricted key (<code>rk_test_</code> / <code>rk_live_</code>) so Leak can scan your Stripe account. Secret keys (<code>sk_</code>) are rejected and never accepted. Restricted keys are encrypted with AES-GCM before storage and are never written to logs.</li>
+    <li><strong>Scan findings.</strong> Findings generated from your Stripe data (webhook status, delivery failures, past-due subscriptions, open invoices), keyed to your email so we can track what is new, resolved, or reopened.</li>
+    <li><strong>Billing records.</strong> Subscription status and Stripe customer ID for Leak Pro. Card details are processed by Stripe; we never see or store them.</li>
+    <li><strong>Session cookie.</strong> A <code>leak_session</code> cookie keeps you signed in. It is scoped to <code>/leak</code> and expires automatically.</li>
+    <li><strong>Support correspondence.</strong> Emails you send us when you reply for help.</li>
+  </ul>
+
+  <h2>2. The Leak Stripe App specifically</h2>
+  <p>When you install Leak from the Stripe App Marketplace, the app reads your Stripe data through the permissions you grant at install (webhook endpoints, events, subscriptions, invoices — read-only). It performs scans in memory inside the Dashboard view. <strong>The Stripe App stores nothing of yours</strong>: no keys to paste, no separate account, no database writes. Continuous monitoring, email alerts, and history live in the Leak web app only, and only if you separately create an account there.</p>
+
+  <h2>3. How we use data</h2>
+  <ul>
+    <li>Run billing-health scans and show you the findings.</li>
+    <li>Send sign-in links and, for Pro accounts, monitoring alert emails.</li>
+    <li>Operate billing (trial status, subscription state) and prevent abuse (rate limits).</li>
+    <li>Respond to support requests.</li>
+  </ul>
+  <p>We do not sell personal data. We do not use your Stripe data for advertising, and we do not train models on it.</p>
+
+  <h2>4. Processors and sharing</h2>
+  <ul>
+    <li><strong>Cloudflare</strong> — hosting, storage (Workers, KV, D1) in their global network.</li>
+    <li><strong>Stripe</strong> — payment processing and, for the web app, the API you authorize us to scan.</li>
+    <li><strong>Resend</strong> — transactional email delivery (sign-in links, alerts).</li>
+  </ul>
+  <p>Beyond these processors, we disclose data only when required by law or to protect our rights, and we will narrow any such disclosure as far as legally possible.</p>
+
+  <h2>5. Security</h2>
+  <ul>
+    <li>Restricted keys are AES-GCM encrypted at rest with a dedicated key-encryption key and never logged.</li>
+    <li>All traffic is TLS-encrypted; sessions expire automatically.</li>
+    <li>The Stripe App requests read-only permissions and performs no writes to your Stripe account.</li>
+  </ul>
+  <p>No system is perfectly secure; if we learn of a breach affecting your data, we will notify you promptly.</p>
+
+  <h2>6. Retention and deletion</h2>
+  <p>Findings and scan history are kept while your account is active so trends and re-opened issues stay accurate. Session and one-time login tokens expire automatically. To export or permanently delete your account and all associated data, reply to any Leak email — we action deletion requests within 30 days, subject to records we must keep for tax or legal reasons.</p>
+
+  <h2>7. Your rights</h2>
+  <p>We are based in Ontario, Canada, and handle requests under Canada's PIPEDA. Where the GDPR or other laws apply to you, you additionally have rights of access, correction, erasure, portability, and objection/restriction. Exercise any of these by replying to any Leak email.</p>
+
+  <h2>8. Children</h2>
+  <p>Leak is a business tool and is not directed at children under 16. We do not knowingly collect their data.</p>
+
+  <h2>9. Changes</h2>
+  <p>We will post material changes here and update the effective date. Continued use after changes take effect constitutes acceptance.</p>
+
+  <footer>EntangleIT Inc. · Ottawa, Canada · <a href="https://entangleit.com/leak">entangleit.com/leak</a></footer>
+</div>
+</body>
+</html>

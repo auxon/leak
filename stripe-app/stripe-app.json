@@ -1,0 +1,47 @@
+{
+  "id": "com.entangleit.leak",
+  "version": "0.1.0",
+  "name": "Leak",
+  "icon": "./icon.png",
+  "sandbox_install_compatible": true,
+  "distribution_type": "public",
+  "stripe_api_access_type": "platform",
+  "permissions": [
+    {
+      "permission": "webhook_read",
+      "purpose": "Leak lists your webhook endpoints to check they exist, are enabled, and listen for the events your billing depends on.",
+      "name": "Read-only audit of webhook endpoints. Leak never creates, modifies, or deletes endpoints."
+    },
+    {
+      "permission": "event_read",
+      "purpose": "Leak reads recent delivery failures so it can point you at the exact events and endpoints that need attention.",
+      "name": "Read-only scan of event delivery failures in the last 15 days."
+    },
+    {
+      "permission": "subscription_read",
+      "purpose": "Leak spots past_due and unpaid subscriptions whose customers may still hold access in your app.",
+      "name": "Read-only scan of past_due and unpaid subscriptions."
+    },
+    {
+      "permission": "invoice_read",
+      "purpose": "Leak spots open invoices left behind by failed payment attempts.",
+      "name": "Read-only scan of open invoices."
+    }
+  ],
+  "ui_extension": {
+    "views": [
+      {
+        "viewport": "stripe.dashboard.home.overview",
+        "component": "HealthOverview"
+      },
+      {
+        "viewport": "stripe.dashboard.drawer.default",
+        "component": "FindingsDrawer"
+      },
+      {
+        "viewport": "settings",
+        "component": "AppSettings"
+      }
+    ]
+  }
+}

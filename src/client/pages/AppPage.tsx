@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { api, fetchMe, type Finding, type Me } from "../lib/api";
 import { findingHelp } from "../lib/finding-fix";
-import { navigate } from "../lib/router";
+import { magicTokenFromLocation, navigate } from "../lib/router";
 
 type Props = {
   me: Me | null;
@@ -30,7 +30,7 @@ export function AppPage({ me, onMe }: Props) {
   const qs = new URLSearchParams(window.location.search);
 
   useEffect(() => {
-    const token = qs.get("token");
+    const token = magicTokenFromLocation();
     const sessionId = qs.get("session_id");
     const checkout = qs.get("checkout");
     async function boot() {
