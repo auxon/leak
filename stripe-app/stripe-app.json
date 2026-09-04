@@ -1,6 +1,6 @@
 {
   "$schema": "https://stripe.com/stripe-app.schema.json",
-  "id": "com.entangleit.leak",
+  "id": "com.entangleit.leakapp",
   "name": "Leak",
   "version": "0.1.0",
   "icon": "./icon.png",
